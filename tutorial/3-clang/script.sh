@@ -8,3 +8,7 @@ clang -cc1 test.c -ast-dump
 clang test.c -S -emit-llvm -o -
 
 clang -S test.c -o -
+
+clang -O3 -emit-llvm test.c -c -o test.bc
+
+lli test.bc
