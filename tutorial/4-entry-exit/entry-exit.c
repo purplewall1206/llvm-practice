@@ -18,7 +18,13 @@ int b(int c) {
 
 int main()
 {
-    printf("trigger main\n");
+    unsigned long rbp = 0;
+
+    asm("movq %%rbp, %0\n\t" 
+            : "=r"(rbp)); 
+    
+
+    printf("trigger main rbp: %lx\n", rbp);
     b(0);
     b(1);
     b(2);
