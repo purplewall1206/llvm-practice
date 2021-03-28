@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #define DUMP(func, call) \
-	printf("%s: func = %p, called by = %p\n", __FUNCTION__, func, call)
+	printf("%s: func = %p, called by = %p   call = %p\n", __FUNCTION__, func, call)
  
  
 void __attribute__((no_instrument_function))

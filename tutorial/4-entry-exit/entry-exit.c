@@ -28,5 +28,13 @@ int main()
     b(0);
     b(1);
     b(2);
+
+    // printf("macros: %s  %s  %s   %s   %s\n", __FUNCTION__, __FILE__, __LINE__, __DATE__, __TIME__);
+    printf("macros: %s  \n", __FUNCTION__);
+    printf("macros: %s  \n",  __FILE__);
+    printf("macros: %d  \n", __LINE__);
+    printf("macros: %s  \n",  __DATE__);
+    printf("macros: %s  \n",  __TIME__);
+    printf("__VERSION__: %s\n", __VERSION__);
     return 0;
 }

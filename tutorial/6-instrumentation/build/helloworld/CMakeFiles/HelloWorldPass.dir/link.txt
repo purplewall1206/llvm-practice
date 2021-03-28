@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared  -o libHelloWorldPass.so CMakeFiles/HelloWorldPass.dir/HelloWorld.cpp.o   -L/home/wangzc/Documents/llvm-project-master/install/lib 
