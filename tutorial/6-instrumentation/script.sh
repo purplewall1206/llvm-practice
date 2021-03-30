@@ -15,3 +15,5 @@ clang  -I/home/wangzc/Documents/llvm-project-master/install/include -fPIC   -D_G
 -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -fno-rtti -std=gnu++14 -o LLVMHelloWorld.cpp.o -c HelloWorld.cpp
 
 clang -fPIC -shared -o LLVMHelloWorld.so  LLVMHelloWorld.cpp.o -L/home/wangzc/Documents/llvm-project-master/install/lib
+
+opt -load build/helloworld/libHelloWorldPass.so -legacy-hello-world -stats -time-passes -p test.bc

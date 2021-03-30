@@ -6,17 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/HelloWorld.cpp
-llvm/Pass.h
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/llvm/Pass.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/header.h
 llvm/IR/Function.h
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/llvm/IR/Function.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/llvm/IR/Function.h
+llvm/Pass.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/llvm/Pass.h
 llvm/Support/raw_ostream.h
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/llvm/Support/raw_ostream.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/llvm/Support/raw_ostream.h
 llvm/IR/LegacyPassManager.h
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/llvm/IR/LegacyPassManager.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/llvm/IR/LegacyPassManager.h
 llvm/Transforms/IPO/PassManagerBuilder.h
-/home/wangzc/Documents/llvm-practice/tutorial/6-instrumentation/helloworld/llvm/Transforms/IPO/PassManagerBuilder.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/llvm/Transforms/IPO/PassManagerBuilder.h
+
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/pass-impl.cpp
+header.h
+/home/wangzc/Documents/llvm-practice/testpass/test-pass/header.h
 
 /home/wangzc/Documents/llvm-project-master/install/include/llvm-c/DataTypes.h
 inttypes.h

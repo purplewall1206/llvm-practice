@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test-binary.dir/test.cpp.o -o test-binary   -L/home/wangzc/Documents/llvm-project-master/install/lib 

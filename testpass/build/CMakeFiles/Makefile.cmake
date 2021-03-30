@@ -11,7 +11,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.19.7/CMakeCCompiler.cmake"
   "CMakeFiles/3.19.7/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.19.7/CMakeSystem.cmake"
-  "../helloworld/CMakeLists.txt"
+  "../test-pass/CMakeLists.txt"
   "/home/wangzc/Documents/llvm-project-master/install/lib/cmake/llvm/LLVM-Config.cmake"
   "/home/wangzc/Documents/llvm-project-master/install/lib/cmake/llvm/LLVMConfig.cmake"
   "/home/wangzc/Documents/llvm-project-master/install/lib/cmake/llvm/LLVMConfigVersion.cmake"
@@ -122,7 +122,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/3.19.7/CMakeCCompiler.cmake"
   "CMakeFiles/3.19.7/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "helloworld/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test-pass/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -130,5 +130,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/acc_gen.dir/DependInfo.cmake"
   "CMakeFiles/omp_gen.dir/DependInfo.cmake"
   "CMakeFiles/intrinsics_gen.dir/DependInfo.cmake"
-  "helloworld/CMakeFiles/HelloWorldPass.dir/DependInfo.cmake"
+  "test-pass/CMakeFiles/test-binary.dir/DependInfo.cmake"
+  "test-pass/CMakeFiles/test-passPass.dir/DependInfo.cmake"
   )
