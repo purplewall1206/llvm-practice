@@ -2,6 +2,7 @@ cmake ..
 make
 
 opt -load instFind/libinstFind.so -legacy-static-cc -disable-output test.bc 
+opt -load instFind/libinstFind.so -legacy-static-cc -disable-output -analyse test.bc 
 
 # test.bc
 clang -emit-llvm -c ../instFind/header.h ../instFind/test.c
