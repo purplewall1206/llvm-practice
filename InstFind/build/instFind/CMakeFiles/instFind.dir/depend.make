@@ -87,6 +87,7 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/CallingConv.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Comdat.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Constant.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/ConstantFolder.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/ConstantRange.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Constants.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DataLayout.h
@@ -96,6 +97,7 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DiagnosticHandler.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DiagnosticInfo.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Dominators.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/FPEnv.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/FixedMetadataKinds.def
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Function.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalAlias.h
@@ -104,11 +106,16 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalObject.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalValue.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalVariable.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IRBuilder.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IRBuilderFolder.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/InstIterator.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/InstrTypes.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instruction.def
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instruction.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instructions.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IntrinsicEnums.inc
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IntrinsicInst.h
+instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Intrinsics.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/LLVMContext.h
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Metadata.def
 instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o: /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Metadata.h

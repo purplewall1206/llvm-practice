@@ -7,6 +7,7 @@
 
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
+#include "llvm/IR/IRBuilder.h"
 
 #include <vector>
 
@@ -22,6 +23,7 @@ struct InstFindModulePass : public llvm::ModulePass {
     // self-define
     std::vector<Instruction*> storeVec;
     std::vector<Instruction*> incallVec; 
+    std::vector<Instruction*> retVec;
     // get
     void findInstructions(Module &M);
     void printInstructions();
@@ -76,6 +78,9 @@ void InstFindModulePass::findInstructions(Module &M) {
                         incallVec.push_back(&Ins);
                     }
                 }
+                if (Ins.getOpcode() == Instruction::Ret) {
+                    retVec.push_back(&Ins);
+                }
             }
         }
     }
@@ -85,9 +90,81 @@ void InstFindModulePass::findInstructions(Module &M) {
 bool InstFindModulePass::runOnModule(Module &M) {
 
     findInstructions(M);
-    printInstructions();
+    // printInstructions();
 
-    // return Res;
+    auto &CTX = M.getContext();
+    PointerType *PrintfArgTy = PointerType::getUnqual(Type::getInt8Ty(CTX));
+
+    // STEP 1: Inject the declaration of printf
+    // ----------------------------------------
+    // Create (or _get_ in cases where it's already available) the following
+    // declaration in the IR module:
+    //    declare i32 @printf(i8*, ...)
+    // It corresponds to the following C declaration:
+    //    int printf(char *, ...)
+    FunctionType *PrintfTy = FunctionType::get(
+        IntegerType::getInt32Ty(CTX),
+        PrintfArgTy,
+        /*IsVarArgs=*/true);
+
+    FunctionCallee Printf = M.getOrInsertFunction("printf", PrintfTy);
+
+    // Set attributes as per inferLibFuncAttributes in BuildLibCalls.cpp
+    Function *PrintfF = dyn_cast<Function>(Printf.getCallee());
+    PrintfF->setDoesNotThrow();
+    PrintfF->addParamAttr(0, Attribute::NoCapture);
+    PrintfF->addParamAttr(0, Attribute::ReadOnly);
+
+
+    // STEP 2: Inject a global variable that will hold the printf format string
+    // ------------------------------------------------------------------------
+    llvm::Constant *PrintfFormatStr = llvm::ConstantDataArray::getString(
+        CTX, "(llvm-tutor) Hello from: %s\n(llvm-tutor)   number of arguments: %d\n");
+
+    Constant *PrintfFormatStrVar =
+        M.getOrInsertGlobal("PrintfFormatStr", PrintfFormatStr->getType());
+    dyn_cast<GlobalVariable>(PrintfFormatStrVar)->setInitializer(PrintfFormatStr);
+
+    for (auto &F : M) {
+        if (F.isDeclaration())
+        continue;
+
+        // Get an IR builder. Sets the insertion point to the top of the function
+        IRBuilder<> Builder(&*F.getEntryBlock().getFirstInsertionPt());
+        errs() << "output  " <<  *F.getEntryBlock().getFirstInsertionPt() << "\n";
+
+        // IRBuilder<> Builder2(&*F.back().getFirstInsertionPt());
+
+        // Inject a global variable that contains the function name
+        auto FuncName = Builder.CreateGlobalStringPtr(F.getName());
+
+        // Printf requires i8*, but PrintfFormatStrVar is an array: [n x i8]. Add
+        // a cast: [n x i8] -> i8*
+        llvm::Value *FormatStrPtr =
+            Builder.CreatePointerCast(PrintfFormatStrVar, PrintfArgTy, "formatStr");
+
+
+        // Finally, inject a call to printf
+        Builder.CreateCall(
+            Printf, {FormatStrPtr, FuncName, Builder.getInt32(F.arg_size())});
+
+        // Builder2.CreateCall(
+        //     Printf, {FormatStrPtr, FuncName, Builder.getInt32(F.arg_size())}
+        // );        
+    }
+
+    for (auto &Ins : retVec) {
+        IRBuilder<> Builder(Ins);
+        errs() << "output  " <<  *Ins << "\n";
+        auto FuncName = Builder.CreateGlobalStringPtr(Ins->getFunction()->getName());
+
+        llvm::Value *FormatStrPtr =
+            Builder.CreatePointerCast(PrintfFormatStrVar, PrintfArgTy, "formatStr");
+
+        Builder.CreateCall(
+            Printf, {FormatStrPtr, FuncName, Builder.getInt32(Ins->getFunction()->arg_size())});
+
+    }
     return false;
 }
 
@@ -116,7 +193,7 @@ char InstFindModulePass::ID = 0;
 
 // #1 REGISTRATION FOR "opt -analyze -legacy-static-cc"
 RegisterPass<InstFindModulePass>
-    X(/*PassArg=*/"legacy-static-cc",
+    X(/*PassArg=*/"instfind",
       /*Name=*/"InstFindModulePass",
       /*CFGOnly=*/true,
       /*is_analysis=*/true);

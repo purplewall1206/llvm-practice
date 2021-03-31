@@ -88,6 +88,7 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/CallingConv.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Comdat.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Constant.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/ConstantFolder.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/ConstantRange.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Constants.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DataLayout.h
@@ -97,6 +98,7 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DiagnosticHandler.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/DiagnosticInfo.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Dominators.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/FPEnv.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/FixedMetadataKinds.def
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Function.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalAlias.h
@@ -105,11 +107,16 @@ instFind/CMakeFiles/instFind.dir/instFindPass.cpp.o
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalObject.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalValue.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/GlobalVariable.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IRBuilder.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IRBuilderFolder.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/InstIterator.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/InstrTypes.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instruction.def
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instruction.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Instructions.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IntrinsicEnums.inc
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/IntrinsicInst.h
+ /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Intrinsics.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/LLVMContext.h
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Metadata.def
  /home/wangzc/Documents/llvm-project-master/install/include/llvm/IR/Metadata.h
