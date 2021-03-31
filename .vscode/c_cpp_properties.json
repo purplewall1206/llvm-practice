@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/home/wangzc/Documents/llvm-project-master/install/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

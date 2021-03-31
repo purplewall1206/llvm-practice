@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared  -o libinstFind.so CMakeFiles/instFind.dir/instFindPass.cpp.o   -L/home/wangzc/Documents/llvm-project-master/install/lib 
