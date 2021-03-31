@@ -50,9 +50,40 @@ namespace
             }
             errs() << "\n";
             opcode_map.clear();
+
+
+
+            errs() << "--------------------------loop analysis----------------" << "\n";
+            LoopInfo* LI = &getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
+            for (Loop* L : *LI) {
+                errs() << "    -----loop: " << L->getName() << "\n";
+                // for(Loop::block_iterator bb = L->block_begin(); bb!=L->block_end();++bb) {
+                //     // for (BasicBlock::iterator i = bb->begin(), i2 = bb->end(); i != i2;i++) {
+                //     // errs()  *i << "\n";
+                //     errs() << "      --loop-- : " << *bb << "\n";
+                // }
+            }
+            errs() << "\n\n";
             return false;
         }
+        void print(llvm::raw_ostream &O, const Module *M) const override
+        {
+            O << "virtual print function implement" << "\n";
+            // errs() << "virtual print function implement" << "\n";
+        }
+
+        virtual void getAnalysisUsage(AnalysisUsage &Info) const override
+        {
+            Info.addRequired<LoopInfoWrapperPass>();
+            errs() << "virtual getAnalysisUsage trigger" << "\n";
+        }
+        // virtual void getAnalysisUsage(AnalysisUsage& AU) const override {
+        //     AU.addRequired<LoopInfoWrapperPass>();
+        // }     
+        
     };
+
+    
 }
 
 char OpcodeCounter::ID = 0;

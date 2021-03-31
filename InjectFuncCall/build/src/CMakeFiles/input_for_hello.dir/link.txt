@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/input_for_hello.dir/input_for_hello.c.o -o input_for_hello   -L/home/wangzc/Documents/llvm-project-master/install/lib 

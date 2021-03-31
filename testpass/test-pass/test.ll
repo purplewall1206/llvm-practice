@@ -49,6 +49,7 @@ entry:
   %a = alloca i32, align 4
   %b = alloca i32, align 4
   %c = alloca i32, align 4
+  %i = alloca i32, align 4
   store i32 0, i32* %retval, align 4
   store i32 0, i32* %a, align 4
   store i32 10, i32* %b, align 4
@@ -62,6 +63,27 @@ entry:
   %add1 = add nsw i32 %2, %3
   %call2 = call nonnull align 8 dereferenceable(8) %"class.std::basic_ostream"* @_ZNSolsEi(%"class.std::basic_ostream"* %call, i32 %add1)
   %call3 = call nonnull align 8 dereferenceable(8) %"class.std::basic_ostream"* @_ZNSolsEPFRSoS_E(%"class.std::basic_ostream"* %call2, %"class.std::basic_ostream"* (%"class.std::basic_ostream"*)* @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
+  store i32 0, i32* %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %entry
+  %4 = load i32, i32* %i, align 4
+  %cmp = icmp slt i32 %4, 10
+  br i1 %cmp, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %5 = load i32, i32* %c, align 4
+  %dec = add nsw i32 %5, -1
+  store i32 %dec, i32* %c, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %6 = load i32, i32* %i, align 4
+  %inc = add nsw i32 %6, 1
+  store i32 %inc, i32* %i, align 4
+  br label %for.cond, !llvm.loop !2
+
+for.end:                                          ; preds = %for.cond
   ret i32 0
 }
 
@@ -91,3 +113,5 @@ attributes #4 = { noinline norecurse optnone uwtable mustprogress "disable-tail-
 
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{!"clang version 12.0.0"}
+!2 = distinct !{!2, !3}
+!3 = !{!"llvm.loop.mustprogress"}
