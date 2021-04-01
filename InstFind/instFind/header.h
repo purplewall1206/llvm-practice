@@ -12,7 +12,7 @@ int x(int c) {
 }
 
 void printtail() {
-    printf("tail triggered\n");
+    printf("\ntail triggered\n");
 }
 
 #define \

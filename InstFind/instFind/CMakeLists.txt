@@ -10,3 +10,8 @@ target_compile_features(instFind
 set_target_properties(instFind PROPERTIES
     COMPILE_FLAGS "-fno-rtti"
 )
+
+add_executable(testbinary
+    test.c
+    header.h
+)

@@ -5,4 +5,5 @@
 /home/wangzc/Documents/llvm-practice/InstFind/build/CMakeFiles/intrinsics_gen.dir
 /home/wangzc/Documents/llvm-practice/InstFind/build/instFind/CMakeFiles/rebuild_cache.dir
 /home/wangzc/Documents/llvm-practice/InstFind/build/instFind/CMakeFiles/edit_cache.dir
+/home/wangzc/Documents/llvm-practice/InstFind/build/instFind/CMakeFiles/testbinary.dir
 /home/wangzc/Documents/llvm-practice/InstFind/build/instFind/CMakeFiles/instFind.dir

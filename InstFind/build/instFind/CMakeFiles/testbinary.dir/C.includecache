@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/wangzc/Documents/llvm-practice/InstFind/instFind/header.h
+stdio.h
+-
+
+/home/wangzc/Documents/llvm-practice/InstFind/instFind/test.c
+header.h
+/home/wangzc/Documents/llvm-practice/InstFind/instFind/header.h
+

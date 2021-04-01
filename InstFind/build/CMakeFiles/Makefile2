@@ -93,6 +93,7 @@ clean: instFind/clean
 # Directory level rules for directory instFind
 
 # Recursive "all" directory target.
+instFind/all: instFind/CMakeFiles/testbinary.dir/all
 instFind/all: instFind/CMakeFiles/instFind.dir/all
 
 .PHONY : instFind/all
@@ -103,6 +104,7 @@ instFind/preinstall:
 .PHONY : instFind/preinstall
 
 # Recursive "clean" directory target.
+instFind/clean: instFind/CMakeFiles/testbinary.dir/clean
 instFind/clean: instFind/CMakeFiles/instFind.dir/clean
 
 .PHONY : instFind/clean
@@ -187,6 +189,33 @@ intrinsics_gen: CMakeFiles/intrinsics_gen.dir/rule
 CMakeFiles/intrinsics_gen.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/intrinsics_gen.dir/build.make CMakeFiles/intrinsics_gen.dir/clean
 .PHONY : CMakeFiles/intrinsics_gen.dir/clean
+
+#=============================================================================
+# Target rules for target instFind/CMakeFiles/testbinary.dir
+
+# All Build rule for target.
+instFind/CMakeFiles/testbinary.dir/all:
+	$(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/depend
+	$(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wangzc/Documents/llvm-practice/InstFind/build/CMakeFiles --progress-num=3,4 "Built target testbinary"
+.PHONY : instFind/CMakeFiles/testbinary.dir/all
+
+# Build rule for subdir invocation for target.
+instFind/CMakeFiles/testbinary.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wangzc/Documents/llvm-practice/InstFind/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 instFind/CMakeFiles/testbinary.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wangzc/Documents/llvm-practice/InstFind/build/CMakeFiles 0
+.PHONY : instFind/CMakeFiles/testbinary.dir/rule
+
+# Convenience name for target.
+testbinary: instFind/CMakeFiles/testbinary.dir/rule
+
+.PHONY : testbinary
+
+# clean rule for target.
+instFind/CMakeFiles/testbinary.dir/clean:
+	$(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/clean
+.PHONY : instFind/CMakeFiles/testbinary.dir/clean
 
 #=============================================================================
 # Target rules for target instFind/CMakeFiles/instFind.dir

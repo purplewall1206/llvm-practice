@@ -130,6 +130,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+instFind/CMakeFiles/testbinary.dir/rule:
+	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 instFind/CMakeFiles/testbinary.dir/rule
+.PHONY : instFind/CMakeFiles/testbinary.dir/rule
+
+# Convenience name for target.
+testbinary: instFind/CMakeFiles/testbinary.dir/rule
+
+.PHONY : testbinary
+
+# fast build rule for target.
+testbinary/fast:
+	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/build
+.PHONY : testbinary/fast
+
+# Convenience name for target.
 instFind/CMakeFiles/instFind.dir/rule:
 	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 instFind/CMakeFiles/instFind.dir/rule
 .PHONY : instFind/CMakeFiles/instFind.dir/rule
@@ -171,6 +186,33 @@ instFindPass.cpp.s:
 	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/instFind.dir/build.make instFind/CMakeFiles/instFind.dir/instFindPass.cpp.s
 .PHONY : instFindPass.cpp.s
 
+test.o: test.c.o
+
+.PHONY : test.o
+
+# target to build an object file
+test.c.o:
+	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/test.c.o
+.PHONY : test.c.o
+
+test.i: test.c.i
+
+.PHONY : test.i
+
+# target to preprocess a source file
+test.c.i:
+	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/test.c.i
+.PHONY : test.c.i
+
+test.s: test.c.s
+
+.PHONY : test.s
+
+# target to generate assembly for a file
+test.c.s:
+	cd /home/wangzc/Documents/llvm-practice/InstFind/build && $(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/test.c.s
+.PHONY : test.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -180,9 +222,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... instFind"
+	@echo "... testbinary"
 	@echo "... instFindPass.o"
 	@echo "... instFindPass.i"
 	@echo "... instFindPass.s"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 

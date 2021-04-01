@@ -4,7 +4,7 @@ target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16
 target triple = "x86_64-unknown-linux-gnu"
 
 @.str = private unnamed_addr constant [8 x i8] c"c = %d\0A\00", align 1
-@.str.1 = private unnamed_addr constant [16 x i8] c"tail triggered\0A\00", align 1
+@.str.1 = private unnamed_addr constant [17 x i8] c"\0Atail triggered\0A\00", align 1
 @.str.2 = private unnamed_addr constant [9 x i8] c"x(1) %d\0A\00", align 1
 @.str.3 = private unnamed_addr constant [11 x i8] c"x(100) %d\0A\00", align 1
 @.str.4 = private unnamed_addr constant [15 x i8] c"indirect c %d\0A\00", align 1
@@ -42,7 +42,7 @@ declare dso_local i32 @printf(i8*, ...) #1
 ; Function Attrs: noinline nounwind optnone uwtable
 define dso_local void @printtail() #0 {
 entry:
-  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.1, i64 0, i64 0))
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.1, i64 0, i64 0))
   ret void
 }
 
@@ -89,4 +89,4 @@ attributes #2 = { nounwind readnone }
 
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{!"clang version 12.0.0"}
-!2 = !{i32 -2147340659, i32 -2147340642}
+!2 = !{i32 -2147340657, i32 -2147340640}

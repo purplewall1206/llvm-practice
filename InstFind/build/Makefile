@@ -169,6 +169,19 @@ intrinsics_gen/fast:
 .PHONY : intrinsics_gen/fast
 
 #=============================================================================
+# Target rules for targets named testbinary
+
+# Build rule for target.
+testbinary: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 testbinary
+.PHONY : testbinary
+
+# fast build rule for target.
+testbinary/fast:
+	$(MAKE) $(MAKESILENT) -f instFind/CMakeFiles/testbinary.dir/build.make instFind/CMakeFiles/testbinary.dir/build
+.PHONY : testbinary/fast
+
+#=============================================================================
 # Target rules for targets named instFind
 
 # Build rule for target.
@@ -193,6 +206,7 @@ help:
 	@echo "... intrinsics_gen"
 	@echo "... omp_gen"
 	@echo "... instFind"
+	@echo "... testbinary"
 .PHONY : help
 
 
