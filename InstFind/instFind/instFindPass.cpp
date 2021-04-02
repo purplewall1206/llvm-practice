@@ -8,6 +8,9 @@
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
 #include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/InlineAsm.h"
+
+#include <iostream>
 
 #include <vector>
 
@@ -27,7 +30,9 @@ struct InstFindModulePass : public llvm::ModulePass {
     // get
     void findInstructions(Module &M);
     void printInstructions();
-    // void 
+    void insertHead(Module &M);
+    void insertTail(Module &M);
+    void insertStore(Module &M);
 };
 
 
@@ -66,7 +71,7 @@ void InstFindModulePass::printInstructions() {
 void InstFindModulePass::findInstructions(Module &M) {
     for (auto &Func : M) {
         errs() << "Searching in " << Func.getName() << "\n";
-        if (StringRef("printtail").equals(Func.getName()))
+        if (StringRef("printtail").equals(Func.getName())  || StringRef("print_lx64").equals(Func.getName()))
             continue;
             
             
@@ -92,37 +97,10 @@ void InstFindModulePass::findInstructions(Module &M) {
     
 }
 
-bool InstFindModulePass::runOnModule(Module &M) {
-
-    findInstructions(M);
-    // printInstructions();
-
+void InstFindModulePass::insertHead(Module &M) {
     auto &CTX = M.getContext();
     PointerType *PrintfArgTy = PointerType::getUnqual(Type::getInt8Ty(CTX));
 
-    // STEP 1: Inject the declaration of printf
-    // ----------------------------------------
-    // Create (or _get_ in cases where it's already available) the following
-    // declaration in the IR module:
-    //    declare i32 @printf(i8*, ...)
-    // It corresponds to the following C declaration:
-    //    int printf(char *, ...)
-    // FunctionType *PrintfTy = FunctionType::get(
-    //     IntegerType::getInt32Ty(CTX),
-    //     PrintfArgTy,
-    //     /*IsVarArgs=*/true);
-
-    // FunctionCallee Printf = M.getOrInsertFunction("printf", PrintfTy);
-
-    // Set attributes as per inferLibFuncAttributes in BuildLibCalls.cpp
-    // Function *PrintfF = dyn_cast<Function>(Printf.getCallee());
-    // PrintfF->setDoesNotThrow();
-    // PrintfF->addParamAttr(0, Attribute::NoCapture);
-    // PrintfF->addParamAttr(0, Attribute::ReadOnly);
-
-
-    // STEP 2: Inject a global variable that will hold the printf format string
-    // ------------------------------------------------------------------------
     llvm::Constant *PrintfFormatStr = llvm::ConstantDataArray::getString(
         CTX, "(llvm-tutor) Hello from: %s   (llvm-tutor)   number of arguments: %d\n");
 
@@ -133,54 +111,62 @@ bool InstFindModulePass::runOnModule(Module &M) {
     for (auto &F : M) {
         if (F.isDeclaration())
         continue;
-        if (StringRef("printtail").equals(F.getName()))
+        if (StringRef("printtail").equals(F.getName()) || StringRef("print_lx64").equals(F.getName()))
             continue;
 
-        // Get an IR builder. Sets the insertion point to the top of the function
         IRBuilder<> Builder(&*F.getEntryBlock().getFirstInsertionPt());
         errs() << "output  " <<  *F.getEntryBlock().getFirstInsertionPt() << "\n";
 
-        // IRBuilder<> Builder2(&*F.back().getFirstInsertionPt());
-
-        // Inject a global variable that contains the function name
         auto FuncName = Builder.CreateGlobalStringPtr(F.getName());
-
-        // Printf requires i8*, but PrintfFormatStrVar is an array: [n x i8]. Add
-        // a cast: [n x i8] -> i8*
+        
         llvm::Value *FormatStrPtr =
             Builder.CreatePointerCast(PrintfFormatStrVar, PrintfArgTy, "formatStr");
 
-
-        // Finally, inject a call to printf
-        // Builder.CreateCall(
-        //     Printf, {FormatStrPtr, FuncName, Builder.getInt32(F.arg_size())});
         Function *func_printf = F.getParent()->getFunction("printf");
         Builder.CreateCall(func_printf, {FormatStrPtr, FuncName, Builder.getInt32(F.arg_size())});
-
-        // Builder2.CreateCall(
-        //     Printf, {FormatStrPtr, FuncName, Builder.getInt32(F.arg_size())}
-        // );        
     }
+}
 
+
+void InstFindModulePass::insertTail(Module &M) {
     for (auto &Ins : retVec) {
         IRBuilder<> Builder(Ins);
         errs() << *Ins << "\n";
-        // auto FuncName = Builder.CreateGlobalStringPtr(Ins->getFunction()->getName());
-        // llvm::Value *FormatStrPtr =
-        // Builder.CreatePointerCast(PrintfFormatStrVar, PrintfArgTy, "formatStr");
-        // Builder.CreateCall(
-        //     Printf, {FormatStrPtr, FuncName, Builder.getInt32(Ins->getFunction()->arg_size())});
+
+        Value* name = Builder.CreateGlobalStringPtr(Ins->getFunction()->getName());
         Function *func_tail = Ins->getFunction()->getParent()->getFunction("printtail");
-        Builder.CreateCall(func_tail, {});
+        Builder.CreateCall(func_tail, {name });
     }
 
-    // macro test
+}
+
+void InstFindModulePass::insertStore(Module &M) {
+    auto &CTX = M.getContext();
     IRBuilder<> Builder(storeVec[0]);
-    // Function *func_rbp = storeVec[0]->getFunction()->getParent()->getFunction("get_rbp");
-    // Builder.CreateCall(func_rbp, {});
+    Function* print_lx64 = storeVec[0]->getFunction()->getParent()->getFunction("print_lx64");
+
     FunctionType *Fty = FunctionType::get(IntegerType::getInt64Ty(CTX), false);
-    // InlineAsm *IA = 
-    //     InlineAsm::get(Fty, )
+    
+    ArrayRef<llvm::Value*> asmArgsValue;
+
+    InlineAsm* IA = InlineAsm::get(Fty, "movq %rbp, $0", "=r", false, false, InlineAsm::AD_ATT);
+    Value *rbp = Builder.CreateCall(IA, {});
+    rbp->setName(storeVec[0]->getFunction()->getName());
+    
+    Builder.CreateCall(print_lx64, {Builder.CreateGlobalStringPtr(rbp->getName()), rbp});
+}
+
+bool InstFindModulePass::runOnModule(Module &M) {
+
+    findInstructions(M);
+    // printInstructions();
+
+    insertHead(M);
+    insertTail(M);
+    insertStore(M);
+    
+
+    
     return false;
 }
 

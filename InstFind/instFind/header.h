@@ -11,8 +11,12 @@ int x(int c) {
     return 3;
 }
 
-void printtail() {
-    printf("\ntail triggered\n");
+void printtail(char * funcname) {
+    printf("%s tail triggered\n", funcname);
+}
+
+void print_lx64(char *varname, unsigned long addr) {
+    printf("%s  :  %lx\n", varname, addr);
 }
 
 #define \

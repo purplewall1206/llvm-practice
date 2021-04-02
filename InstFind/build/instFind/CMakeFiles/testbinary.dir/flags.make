@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = -I/home/wangzc/Documents/llvm-project-master/install/include
+C_INCLUDES = -I/home/wangzc/Documents/llvm-project/install/include
 
 C_FLAGS =   -D_GNU_SOURCE -D_DEBUG -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 
