@@ -16,7 +16,7 @@ void printtail(char * funcname) {
 }
 
 void print_lx64(char *varname, unsigned long addr) {
-    printf("%s  :  %lx\n", varname, addr);
+    printf("%s  :  0x%lx\n", varname, addr);
 }
 
 #define \

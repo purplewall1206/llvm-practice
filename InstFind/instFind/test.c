@@ -10,6 +10,9 @@ int main()
     a = x;
     res = a(12);
     printf("indirect c %d\n", res);
+    void (*b)(char*, unsigned long);
+    b = print_lx64;
+    b("abcd", 0xbeef);
     get_rbp();
 
 

@@ -33,7 +33,91 @@ struct InstFindModulePass : public llvm::ModulePass {
     void insertHead(Module &M);
     void insertTail(Module &M);
     void insertStore(Module &M);
+    void printStoreParam(Module &M);
+    void printinCallParam(Module &M);
 };
+
+
+
+
+bool InstFindModulePass::runOnModule(Module &M) {
+
+    findInstructions(M);
+    // printInstructions();
+
+    insertHead(M);
+    insertTail(M);
+    // insertStore(M);
+    printStoreParam(M);
+    printinCallParam(M);
+
+    
+    return false;
+}
+
+void InstFindModulePass::printinCallParam(Module &M) {
+    auto &CTX = M.getContext();
+    for (auto& Ins : incallVec) {
+        errs() << *Ins << "\n";
+        std::vector<Value*> vec;
+        for (Use &U : Ins->operands()) {
+            Value* v = U.get();
+            vec.push_back(v);
+            errs() << "   operands: " <<  *v << "  : " << v->getName() << " \n";
+        }
+        IRBuilder<> Builder(Ins);
+        Function* print_lx64 = Ins->getFunction()->getParent()->getFunction("print_lx64");
+        Builder.CreateCall(print_lx64, {Builder.CreateGlobalStringPtr((vec.back())->getName()), Builder.CreatePtrToInt(vec.back(), Type::getInt64Ty(CTX), "")});
+    }
+}
+
+void InstFindModulePass::printStoreParam(Module &M) {
+    Instruction* Ins = storeVec[0];
+    errs() << *Ins << "\n";
+
+    std::vector<Value*> v;
+    IRBuilder<> Builder(Ins);
+    Function* print_lx64 = Ins->getFunction()->getParent()->getFunction("print_lx64");
+    for (Use &U : Ins->operands()) {
+        v.push_back(U.get());
+    }
+
+    auto &CTX = M.getContext();
+    Builder.CreateCall(print_lx64, {Builder.CreateGlobalStringPtr((v[0])->getName()), Builder.CreateZExt(v[0], Type::getInt64Ty(CTX), "")});
+    Builder.CreateCall(print_lx64, {Builder.CreateGlobalStringPtr((v[1])->getName()), Builder.CreatePtrToInt(v[1], Type::getInt64Ty(CTX), "")});
+
+// 0    store i32 %c, i32* %c.addr, align 4
+// 1    store i32 1, i32* %retval, align 4
+// 2    store i32 2, i32* %retval, align 4
+// 3    store i32 0, i32* %retval, align 4
+// 4    store i32 %call, i32* %res, align 4
+// 5    store i32 %call2, i32* %res, align 4
+// 6    store i32 (i32)* @x, i32 (i32)** %a, align 8
+// 7    store i32 %call4, i32* %res, align 4
+// 8    store i64 0, i64* %rbp, align 8
+// 9    store i64 %4, i64* %rbp, align 8
+// 10    store i64 %6, i64* %tmp, align 8
+}
+
+void InstFindModulePass::print(raw_ostream &OutS, Module const *) const {
+    OutS << "================================================="
+        << "\n";
+    OutS << "LLVM-TUTOR: static analysis results\n";
+    OutS << "=================================================\n";
+    const char *str1 = "NAME";
+    const char *str2 = "#N DIRECT CALLS";
+    OutS << format("%-20s %-10s\n", str1, str2);
+    OutS << "-------------------------------------------------"
+        << "\n";
+
+    // for (auto &CallCount : DirectCalls) {
+    //     OutS << format("%-20s %-10lu\n", CallCount.first->getName().str().c_str(),
+    //                 CallCount.second);
+    // }
+
+    OutS << "-------------------------------------------------"
+        << "\n\n";
+}
 
 
 void InstFindModulePass::printInstructions() {
@@ -146,49 +230,12 @@ void InstFindModulePass::insertStore(Module &M) {
     Function* print_lx64 = storeVec[0]->getFunction()->getParent()->getFunction("print_lx64");
 
     FunctionType *Fty = FunctionType::get(IntegerType::getInt64Ty(CTX), false);
-    
-    ArrayRef<llvm::Value*> asmArgsValue;
 
     InlineAsm* IA = InlineAsm::get(Fty, "movq %rbp, $0", "=r", false, false, InlineAsm::AD_ATT);
     Value *rbp = Builder.CreateCall(IA, {});
     rbp->setName(storeVec[0]->getFunction()->getName());
     
     Builder.CreateCall(print_lx64, {Builder.CreateGlobalStringPtr(rbp->getName()), rbp});
-}
-
-bool InstFindModulePass::runOnModule(Module &M) {
-
-    findInstructions(M);
-    // printInstructions();
-
-    insertHead(M);
-    insertTail(M);
-    insertStore(M);
-    
-
-    
-    return false;
-}
-
-
-void InstFindModulePass::print(raw_ostream &OutS, Module const *) const {
-    OutS << "================================================="
-        << "\n";
-    OutS << "LLVM-TUTOR: static analysis results\n";
-    OutS << "=================================================\n";
-    const char *str1 = "NAME";
-    const char *str2 = "#N DIRECT CALLS";
-    OutS << format("%-20s %-10s\n", str1, str2);
-    OutS << "-------------------------------------------------"
-        << "\n";
-
-    // for (auto &CallCount : DirectCalls) {
-    //     OutS << format("%-20s %-10lu\n", CallCount.first->getName().str().c_str(),
-    //                 CallCount.second);
-    // }
-
-    OutS << "-------------------------------------------------"
-        << "\n\n";
 }
 
 char InstFindModulePass::ID = 0;
