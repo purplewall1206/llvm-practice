@@ -9,5 +9,7 @@ gdb opt
     break llvm::PassManager::run
     run base.bc -load ~/Documents/llvm-project-master/llvm-build/lib/LLVMHello.so -hello
 
-
 clang `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared Hello.cpp -o LLVMHello.so `llvm-config --ldflags`
+
+opt -load ./hellopass.so -hello base.bc
+# 这里必须有./
