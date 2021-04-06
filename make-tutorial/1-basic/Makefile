@@ -36,6 +36,34 @@ test:
 	@echo $$HOME
 	@echo $(v1)
 
+libs=x
+ifeq ($(CC),gcc)
+	libs=$(txt)
+else
+	libs=$(v1)
+endif
+
+LIST = one two three
+
+srcfiles := $(shell echo src/{00..99}.txt)
 test1:
 	@echo $(CC)
-	
+	@echo $(libs)
+	@for i in $(LIST); do \
+		echo $$i; \
+	done	
+	@echo $(srcfiles)
+
+srcfiles := $(wildcard *.txt)
+
+ifneq ($(LLVM),)
+HOSTCC	= clang
+else
+HOSTCC	= gcc
+endif
+test2:
+	@echo $(srcfiles)
+	@echo $(subst ee,EE,feet on the street)
+	@echo $(patsubst %.txt,%.o.txt, $(wildcard *.txt))
+	@echo $(LLVM)
+	@echo $(HOSTCC)
