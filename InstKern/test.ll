@@ -13,7 +13,7 @@ target triple = "x86_64-unknown-linux-gnu"
 @.str.7 = private unnamed_addr constant [18 x i8] c"current rbp: %lx\0A\00", align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define dso_local i32 @x(i32 %c) #0 {
+define dso_local i3LLVM2 @x(i32 %c) #0 {
 entry:
   %retval = alloca i32, align 4
   %c.addr = alloca i32, align 4
