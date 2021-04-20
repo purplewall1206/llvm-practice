@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/wangzc/Documents/llvm-project/llvm-build/include/**",
+                "/home/wangzc/Documents/llvm-project/install/include/**",
+                "/home/wangzc/Documents/llvm-project/install/include/llvm/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
