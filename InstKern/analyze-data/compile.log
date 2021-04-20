@@ -1,0 +1,180 @@
+instructions : 1626
+store instructions: 9
+icall instructions: 0
+ret   instructions: 19
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/block_validity.ll  -o  fs/ext4/block_validity-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/dir.ll  -o  fs/ext4/dir-inst.ll
+instructions : 316
+store instructions: 12
+icall instructions: 0
+ret   instructions: 5
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/ext4_jbd2.ll  -o  fs/ext4/ext4_jbd2-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/extents.ll  -o  fs/ext4/extents-inst.ll
+instructions : 536
+store instructions: 13
+icall instructions: 0
+ret   instructions: 8
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/extents_status.ll  -o  fs/ext4/extents_status-inst.ll
+instructions : 1346
+store instructions: 59
+icall instructions: 4
+ret   instructions: 9
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/file.ll  -o  fs/ext4/file-inst.ll
+instructions : 816
+store instructions: 15
+icall instructions: 0
+ret   instructions: 10
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/fsmap.ll  -o  fs/ext4/fsmap-inst.ll
+instructions : 1299
+store instructions: 19
+icall instructions: 0
+ret   instructions: 11
+instructions : 1318
+store instructions: 141
+icall instructions: 4
+ret   instructions: 9
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/fsync.ll  -o  fs/ext4/fsync-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/hash.ll  -o  fs/ext4/hash-inst.ll
+instructions : 3448
+store instructions: 144
+icall instructions: 3
+ret   instructions: 31
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/ialloc.ll  -o  fs/ext4/ialloc-inst.ll
+instructions : 212
+store instructions: 0
+icall instructions: 0
+ret   instructions: 1
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/indirect.ll  -o  fs/ext4/indirect-inst.ll
+instructions : 613
+store instructions: 14
+icall instructions: 2
+ret   instructions: 4
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/inline.ll  -o  fs/ext4/inline-inst.ll
+instructions : 9899
+store instructions: 384
+icall instructions: 0
+ret   instructions: 52
+instructions : 3063
+store instructions: 71
+icall instructions: 0
+ret   instructions: 13
+instructions : 2101
+store instructions: 118
+icall instructions: 0
+ret   instructions: 10
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/inode.ll  -o  fs/ext4/inode-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/ioctl.ll  -o  fs/ext4/ioctl-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/mballoc.ll  -o  fs/ext4/mballoc-inst.ll
+instructions : 3757
+store instructions: 89
+icall instructions: 3
+ret   instructions: 30
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/migrate.ll  -o  fs/ext4/migrate-inst.ll
+instructions : 2349
+store instructions: 77
+icall instructions: 0
+ret   instructions: 9
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/mmp.ll  -o  fs/ext4/mmp-inst.ll
+instructions : 1113
+store instructions: 51
+icall instructions: 0
+ret   instructions: 5
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/move_extent.ll  -o  fs/ext4/move_extent-inst.ll
+instructions : 581
+store instructions: 23
+icall instructions: 0
+ret   instructions: 5
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/namei.ll  -o  fs/ext4/namei-inst.ll
+instructions : 1085
+store instructions: 36
+icall instructions: 0
+ret   instructions: 6
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/page-io.ll  -o  fs/ext4/page-io-inst.ll
+instructions : 1033
+store instructions: 63
+icall instructions: 0
+ret   instructions: 15
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/readpage.ll  -o  fs/ext4/readpage-inst.ll
+instructions : 12671
+store instructions: 366
+icall instructions: 3
+ret   instructions: 83
+instructions : 11604
+store instructions: 413
+icall instructions: 1
+ret   instructions: 61
+instructions : 808
+store instructions: 47
+icall instructions: 0
+ret   instructions: 7
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/resize.ll  -o  fs/ext4/resize-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/super.ll  -o  fs/ext4/super-inst.ll
+instructions : 8623
+store instructions: 405
+icall instructions: 0
+ret   instructions: 43
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/symlink.ll  -o  fs/ext4/symlink-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/sysfs.ll  -o  fs/ext4/sysfs-inst.ll
+instructions : 63
+store instructions: 0
+icall instructions: 0
+ret   instructions: 1
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/xattr.ll  -o  fs/ext4/xattr-inst.ll
+instructions : 482
+store instructions: 15
+icall instructions: 0
+ret   instructions: 7
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/xattr_hurd.ll  -o  fs/ext4/xattr_hurd-inst.ll
+instructions : 3506
+store instructions: 86
+icall instructions: 0
+ret   instructions: 13
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/xattr_trusted.ll  -o  fs/ext4/xattr_trusted-inst.ll
+instructions : 38
+store instructions: 0
+icall instructions: 0
+ret   instructions: 3
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/xattr_user.ll  -o  fs/ext4/xattr_user-inst.ll
+instructions : 6
+store instructions: 0
+icall instructions: 0
+ret   instructions: 3
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/fast_commit.ll  -o  fs/ext4/fast_commit-inst.ll
+instructions : 38
+store instructions: 0
+icall instructions: 0
+ret   instructions: 3
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/acl.ll  -o  fs/ext4/acl-inst.ll
+instructions : 5768
+store instructions: 173
+icall instructions: 2
+ret   instructions: 29
+instructions : 379
+store instructions: 17
+icall instructions: 0
+ret   instructions: 4
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/xattr_security.ll  -o  fs/ext4/xattr_security-inst.ll
+opt -load ./LLVMinstkern.so -analyze -inst fs/ext4/verity.ll  -o  fs/ext4/verity-inst.ll
+instructions : 28
+store instructions: 0
+icall instructions: 0
+ret   instructions: 4
+llc -code-model=kernel --filetype=obj fs/ext4/balloc.ll  
+instructions : 516
+store instructions: 10
+icall instructions: 0
+ret   instructions: 7
+llc -code-model=kernel --filetype=obj fs/ext4/bitmap.ll  
+instructions : 4245
+store instructions: 305
+icall instructions: 0
+ret   instructions: 36
+llc -code-model=kernel --filetype=obj fs/ext4/block_validity.ll  
+llc -code-model=kernel --filetype=obj fs/ext4/dir.ll  
+llc -code-model=kernel --filetype=obj fs/ext4/ext4_jbd2.ll  
+llc -code-model=kernel --filetype=obj fs/ext4/extents.ll  
+instructions : 27239
+store instructions: 1849
+icall instructions: 118
+ret   instructions: 596
+llc -code-model=kernel --filetype=obj fs/ext4/extents_status.ll  
