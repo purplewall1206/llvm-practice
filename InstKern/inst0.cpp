@@ -73,7 +73,21 @@ namespace {
         outs() << "store instructions: " << storeVec.size() << "\n";
 
         // declare + insert
-        int x = 0;
+        // define dso_local zeroext i1 @storeaddr(i64 %0) local_unnamed_addr #0 {
+            
+        Type* intTy1 = Type::getInt1Ty(CTX);
+        Type* intTy64 = Type::getInt64Ty(CTX);
+        bool isVarArg = false;
+
+        std::vector<Type*> funcParam;
+        funcParam.push_back(intTy64);
+        FunctionType *functionCallType = FunctionType::get(
+            intTy1, funcParam, isVarArg 
+        );
+
+        M.getOrInsertFunction("storeaddr", functionCallType);
+
+
         for (auto& Ins : storeVec) {
             std::vector<Value*> param;
             for (Use &U : Ins->operands()) {
