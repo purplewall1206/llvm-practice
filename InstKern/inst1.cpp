@@ -116,8 +116,7 @@ namespace {
             Function* storeaddrFunc = M.getFunction("getaddr");
             builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
             builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
-            builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
-            builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
+            
 
         }
         
