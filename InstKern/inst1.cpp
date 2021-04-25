@@ -23,6 +23,8 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/Support/raw_ostream.h"
 
+#include "llvm/Transforms/Utils/Cloning.h"
+
 #include <vector>
 
 using namespace llvm;
@@ -73,31 +75,48 @@ namespace {
         outs() << "store instructions: " << storeVec.size() << "\n";
 
         // declare + insert
-        // define dso_local zeroext i1 @storeaddr(i64 %0) local_unnamed_addr #0 {
+        // define dso_local i64 @getaddr1(i64 %0) #0 {
             
-        Type* intTy1 = Type::getInt1Ty(CTX);
+        // Type* intTy1 = Type::getInt1Ty(CTX);
         Type* intTy64 = Type::getInt64Ty(CTX);
-        // 参数数量不是不定的
         bool isVarArg = false;
 
         std::vector<Type*> funcParam;
         funcParam.push_back(intTy64);
         FunctionType *functionCallType = FunctionType::get(
-            intTy1, funcParam, isVarArg 
+            intTy64, funcParam, isVarArg 
         );
 
-        M.getOrInsertFunction("storeaddr", functionCallType);
+        M.getOrInsertFunction("getaddr", functionCallType);
 
+        Function* getaddrFunc = M.getFunction("getaddr");
+
+        outs() << "get function0: getaddr at " << getaddrFunc << "\n";
+
+        // CallBase *CB = dyn_cast<CallBase>(getaddrFunc);
+        // outs() << "get function1: getaddr at " << getaddrFunc << "\n";
+        // outs() << CB->hasMetadata()  << "\n";
+
+        // InlineFunctionInfo IFI(nullptr, nullptr, nullptr, nullptr, nullptr);
+        // outs() << "get function2: getaddr at " << getaddrFunc << "\n";
+
+        // InlineResult res = InlineFunction(*CB, IFI, nullptr, true, nullptr);
+        // outs() << "get function3: getaddr at " << getaddrFunc << "\n";
+
+        // outs() << res.isSuccess() << "\n";
 
         for (auto& Ins : storeVec) {
             std::vector<Value*> param;
             for (Use &U : Ins->operands()) {
                 param.push_back(U.get());
             }
-            outs() << Ins->getFunction()->getName() << ": " <<  *Ins  << ":" << Ins->hasMetadata() << "\n";
+        //     outs() << Ins->getFunction()->getName() << ": " <<  *Ins  << ":" << Ins->hasMetadata() << "\n";
             IRBuilder<> builder(Ins);
 
-            Function* storeaddrFunc = Ins->getFunction()->getParent()->getFunction("storeaddr");
+            Function* storeaddrFunc = M.getFunction("getaddr");
+            builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
+            builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
+            builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
             builder.CreateCall(storeaddrFunc, {builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)) });
 
         }
