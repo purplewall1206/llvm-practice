@@ -21,12 +21,11 @@ define dso_local void @set_tag(i64 %0, i8 signext %1) #0 {
   store i64 %0, i64* %3, align 8
   store i8 %1, i8* %4, align 1
   %6 = load i64, i64* %3, align 8
-  %7 = call i64 @cal_tag(i64 %6)
-  %8 = inttoptr i64 %7 to i8*
-  store i8* %8, i8** %5, align 8
-  %9 = load i8, i8* %4, align 1
-  %10 = load i8*, i8** %5, align 8
-  store i8 %9, i8* %10, align 1
+  %7 = inttoptr i64 %6 to i8*
+  store i8* %7, i8** %5, align 8
+  %8 = load i8, i8* %4, align 1
+  %9 = load i8*, i8** %5, align 8
+  store i8 %8, i8* %9, align 1
   ret void
 }
 
@@ -45,24 +44,23 @@ define dso_local void @check_tag(i64 %0, i8 signext %1) #0 {
   store i64 %0, i64* %3, align 8
   store i8 %1, i8* %4, align 1
   %6 = load i64, i64* %3, align 8
-  %7 = call i64 @cal_tag(i64 %6)
-  %8 = inttoptr i64 %7 to i8*
-  store i8* %8, i8** %5, align 8
-  %9 = load i8*, i8** %5, align 8
-  %10 = load i8, i8* %9, align 1
-  %11 = sext i8 %10 to i32
-  %12 = load i8, i8* %4, align 1
-  %13 = sext i8 %12 to i32
-  %14 = and i32 %11, %13
-  %15 = icmp ne i32 %14, 0
-  br i1 %15, label %16, label %18
+  %7 = inttoptr i64 %6 to i8*
+  store i8* %7, i8** %5, align 8
+  %8 = load i8*, i8** %5, align 8
+  %9 = load i8, i8* %8, align 1
+  %10 = sext i8 %9 to i32
+  %11 = load i8, i8* %4, align 1
+  %12 = sext i8 %11 to i32
+  %13 = and i32 %10, %12
+  %14 = icmp ne i32 %13, 0
+  br i1 %14, label %15, label %17
 
-16:                                               ; preds = %2
-  %17 = load i64, i64* %3, align 8
-  call void @report_bug(i64 %17)
-  br label %18
+15:                                               ; preds = %2
+  %16 = load i64, i64* %3, align 8
+  call void @report_bug(i64 %16)
+  br label %17
 
-18:                                               ; preds = %16, %2
+17:                                               ; preds = %15, %2
   ret void
 }
 
