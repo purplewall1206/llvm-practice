@@ -90,16 +90,17 @@ namespace {
         // }
         auto &CTX = M.getContext();
         Type *intTy64 = Type::getInt64Ty(CTX);
+        
         outs() << "intty64\n";
-        AllocaInst *AI = builder.CreateAlloca(intTy64, nullptr, "alloca2");
+        Value *AI = builder.CreateAlloca(intTy64, nullptr, "alloca2");
         errs() << "after alloca\n";
-        Value *ST = builder.CreateStore(vaddr, AI, false);
+        StoreInst *ST = builder.CreateStore(builder.CreatePtrToInt(vaddr, intTy64, "vaddrtoi64"), AI, false);
         errs() << "after store\n";
-        LoadInst *LT = builder.CreateLoad(AI, "cal_tag_load3");
+        LoadInst *LT = builder.CreateLoad(AI, "load3");
         errs() << "after load\n";
-        Value *LSHR = builder.CreateLShr(LT, 3, "cal_tag_lshr4", false);
+        Value *LSHR = builder.CreateLShr(LT, 3, "lshr4", false);
         errs() << "after lshr\n";
-        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0xdfffc88000000000), "cal_tag_add5");
+        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0xdfffc88000000000), "add5");
         errs() << "after add\n";
         return ADD;
     }
@@ -130,8 +131,8 @@ namespace {
         }
         IRBuilder<> builder(Ins);
         Value *ADD = inst_cal_tag(param[1], builder, M);
-        errs() << "get ADD " << *ADD << "\n";
-        Value *RBP = inst_get_rbp(builder, M);
+        // errs() << "get ADD " << *ADD << "\n";
+        // Value *RBP = inst_get_rbp(builder, M);
         return true;
     }
 

@@ -14,9 +14,8 @@ unsigned long cal_tag(unsigned long addr) {
 
 // eid 的tag由llvm 生成就行
 void set_tag(unsigned long addr, char val) {
-    addr = (addr >> 3) + ketag_offset;
-    char *x = (char*) addr;
-    x[0] = val;
+    char *x = (char*) cal_tag(addr);
+    *x = val;
 }
 
 // void set_tag_long()
@@ -28,9 +27,8 @@ void report_bug(unsigned long addr) {
 // eid 的tag由llvm 生成就行
 // char val = (char)(1 << eid);
 void check_tag(unsigned long addr, char val) {
-    unsigned long xaddr = (addr >> 3) + ketag_offset;
-    char *x = (char*) xaddr;
-    if (x[0] & val) {
+    char *x = (char*) cal_tag(addr);
+    if (*x & val) {
         report_bug(addr);
     }
 }

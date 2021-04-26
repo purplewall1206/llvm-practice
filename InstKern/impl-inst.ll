@@ -1,4 +1,4 @@
-; ModuleID = 'impl-inst.bc'
+; ModuleID = 'test/impl.ll'
 source_filename = "impl.c"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
@@ -9,7 +9,8 @@ target triple = "x86_64-pc-linux-gnu"
 define dso_local i64 @getaddr(i64 %0) #0 {
   %2 = alloca i64, align 8
   %alloca2 = alloca i64, align 8
-  store i64 %0, i64* %alloca2, align 8
+  %vaddrtoi64 = ptrtoint i64* %2 to i64
+  store i64 %vaddrtoi64, i64* %alloca2, align 8
   %load3 = load i64, i64* %alloca2, align 8
   %lshr4 = lshr i64 %load3, 3
   %add5 = add i64 %lshr4, -2305904032109035520
