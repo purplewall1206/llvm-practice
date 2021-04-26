@@ -32,6 +32,18 @@ define dso_local i32 @a(i32 %0) #0 {
   %4 = call i64 asm "movq %rbp, $0", "=r"()
   call void @printx(i64 %add5)
   call void @printx(i64 %4)
+  %alloca3 = alloca i64, align 8
+  %alloca4 = alloca i8, align 1
+  %alloca5 = alloca i8*, align 8
+  store i64 %add5, i64* %alloca3, align 8
+  store i8 2, i8* %alloca4, align 1
+  %load6 = load i64, i64* %alloca3, align 8
+  %inttoptr7 = inttoptr i64 %load6 to i8*
+  call void @printx(i64 %load6)
+  store i8* %inttoptr7, i8** %alloca5, align 8
+  %load8 = load i8, i8* %alloca4, align 1
+  ; %load9 = load i8*, i8** %alloca5, align 8
+  ; store i8 %load8, i8* %load9, align 1
   store i32 %0, i32* %3, align 4
   %5 = load i32, i32* %3, align 4
   %6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.1, i64 0, i64 0), i32* %3, i32 %5)
