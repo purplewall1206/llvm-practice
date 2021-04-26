@@ -28,6 +28,8 @@ opt-inst1:
 	opt -load ./llvminst1.so -inst test/test.ll -o test/test.bc
 	llc --filetype=obj test/test.bc -o test/test.o
 	
+opt-inst2:
+	opt -load ./llvminst2.so -S -inst test/test.ll -o test-inst.ll
 
 opt-s:  statistic
 	opt -load ./LLVMstatistic.so -inst -analyze acl.ll

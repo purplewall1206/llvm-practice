@@ -1,4 +1,4 @@
-; ModuleID = 'test.c'
+; ModuleID = 'test/test.ll'
 source_filename = "test.c"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
@@ -23,28 +23,37 @@ declare i32 @printf(i8*, ...) #1
 define dso_local i32 @a(i32 %0) #0 {
   %2 = alloca i32, align 4
   %3 = alloca i32, align 4
+  %alloca2 = alloca i64, align 8
+  %vaddrtoi64 = ptrtoint i32* %3 to i64
+  store i64 %vaddrtoi64, i64* %alloca2, align 8
+  %load3 = load i64, i64* %alloca2, align 8
+  %lshr4 = lshr i64 %load3, 3
+  %add5 = add i64 %lshr4, 0
+  %4 = call i64 asm "movq %rbp, $0", "=r"()
+  call void @printx(i64 %add5)
+  call void @printx(i64 %4)
   store i32 %0, i32* %3, align 4
-  %4 = load i32, i32* %3, align 4
-  %5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.1, i64 0, i64 0), i32* %3, i32 %4)
-  %6 = load i32, i32* %3, align 4
-  %7 = icmp sgt i32 %6, 0
-  br i1 %7, label %8, label %11
+  %5 = load i32, i32* %3, align 4
+  %6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.1, i64 0, i64 0), i32* %3, i32 %5)
+  %7 = load i32, i32* %3, align 4
+  %8 = icmp sgt i32 %7, 0
+  br i1 %8, label %9, label %12
 
-8:                                                ; preds = %1
-  %9 = load i32, i32* %3, align 4
-  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.2, i64 0, i64 0), i32 %9)
+9:                                                ; preds = %1
+  %10 = load i32, i32* %3, align 4
+  %11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.2, i64 0, i64 0), i32 %10)
   store i32 1, i32* %2, align 4
-  br label %14
+  br label %15
 
-11:                                               ; preds = %1
-  %12 = load i32, i32* %3, align 4
-  %13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.3, i64 0, i64 0), i32 %12)
+12:                                               ; preds = %1
+  %13 = load i32, i32* %3, align 4
+  %14 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.3, i64 0, i64 0), i32 %13)
   store i32 -1, i32* %2, align 4
-  br label %14
+  br label %15
 
-14:                                               ; preds = %11, %8
-  %15 = load i32, i32* %2, align 4
-  ret i32 %15
+15:                                               ; preds = %12, %9
+  %16 = load i32, i32* %2, align 4
+  ret i32 %16
 }
 
 ; Function Attrs: noinline nounwind optnone sspstrong uwtable

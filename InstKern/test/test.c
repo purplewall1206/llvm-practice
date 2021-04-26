@@ -1,6 +1,11 @@
 #include <stdio.h>
 
+void printx(unsigned long addr ) {
+    printf("%016lx\n", addr);
+}
+
 int a(int c) {
+    printf("get c addr: %016lx - %d\n", &c, c);
     if (c > 0) {
         printf("+%d\n", c);
         return 1;
@@ -8,7 +13,7 @@ int a(int c) {
         printf("%d\n",c );
         return -1;
     } 
-        
+    
     return 0;
 }   
 

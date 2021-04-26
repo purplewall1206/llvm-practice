@@ -37,7 +37,7 @@ namespace {
         Inst2ModulePass() : ModulePass(ID) {}
         bool runOnModule(Module &M) override;
         std::vector<Instruction*> storeVec;
-        std::vector<StringRef> exceptVec = {};
+        std::vector<StringRef> exceptVec = {"printx"};
         // std::vector<Instruction*> entryVec;
 
         void generateStoreVec(Module &M);
@@ -100,7 +100,7 @@ namespace {
         errs() << "after load\n";
         Value *LSHR = builder.CreateLShr(LT, 3, "lshr4", false);
         errs() << "after lshr\n";
-        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0xdfffc88000000000), "add5");
+        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0x0), "add5");
         errs() << "after add\n";
         return ADD;
     }
@@ -131,8 +131,11 @@ namespace {
         }
         IRBuilder<> builder(Ins);
         Value *ADD = inst_cal_tag(param[1], builder, M);
-        // errs() << "get ADD " << *ADD << "\n";
-        // Value *RBP = inst_get_rbp(builder, M);
+        errs() << "get ADD " << *ADD << "\n";
+        Value *RBP = inst_get_rbp(builder, M);
+        errs() << "get RBP " << *RBP << "\n";
+        builder.CreateCall(M.getFunction("printx"), {ADD});
+        builder.CreateCall(M.getFunction("printx"), {RBP});
         return true;
     }
 
