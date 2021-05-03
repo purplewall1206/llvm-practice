@@ -6,6 +6,7 @@ y = 0xffff888100000000
 z = 0xffff888220000000
 
 a = 0xffffb9900fb0aa03
+b = 0xffffffff81000000
 
 def recal(x):
     x = (x-ketag_offset) << 3
@@ -22,3 +23,4 @@ def cal(x):
 print(hex(cal(y)))
 
 print(hex(cal(z)))
+print(hex(cal(b)))
