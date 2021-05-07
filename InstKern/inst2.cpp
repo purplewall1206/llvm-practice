@@ -47,14 +47,42 @@ namespace {
         Value* inst_get_rbp(IRBuilder<> &builder, Module &M);
         void inst_check_tag(Value* vaddr, IRBuilder<> &builder, Module &M);
         void inst_set_tag(Value* vaddr, IRBuilder<> &builder, Module &M);
+
+        void declareCheck(Module& M);
     };
+
+    void Inst2ModulePass::declareCheck(Module& M) {
+        auto &CTX = M.getContext();
+        // void ketag_check(unsigned long addr, char extID) 
+        // define dso_local void @ketag_check(i64 %0, i8 signext %1) #0 {
+        Type *voidTy = Type::getVoidTy(CTX);
+        Type *int64Ty = Type::getInt64Ty(CTX);
+        Type *int8Ty = Type::getInt8Ty(CTX);
+        bool isVarArg = false;
+        std::vector<Type*> funcParam;
+        funcParam.push_back(int64Ty);
+        funcParam.push_back(int8Ty);
+        FunctionType *funcCallType = FunctionType::get(
+            voidTy, funcParam, isVarArg
+        );
+        M.getOrInsertFunction("ketag_check", funcCallType);
+
+        M.getOrInsertFunction("ketag_set_tag", funcCallType);
+
+        Type *int8PtrTy = Type::getInt8PtrTy(CTX);
+        std::vector<Type*> funcParam1 = {int8PtrTy};
+        FunctionType *funcCallType1 = FunctionType::get(
+            voidTy, funcParam1, isVarArg
+        );
+        M.getOrInsertFunction("ketag_print_func", funcCallType1);
+    }
 
     bool Inst2ModulePass::isException(StringRef name) {
         if (std::find(exceptVec.begin(), exceptVec.end(), name) != exceptVec.end()) {
-            errs() << "is exception " << name << "\n";
+            // errs() << "is exception " << name << "\n";
             return true;
         }
-        errs() << "not exception " << name << "\n";
+        // errs() << "not exception " << name << "\n";
         return false;
     }
 
@@ -91,17 +119,17 @@ namespace {
         auto &CTX = M.getContext();
         Type *intTy64 = Type::getInt64Ty(CTX);
         
-        outs() << "intty64\n";
+        // outs() << "intty64\n";
         Value *AI = builder.CreateAlloca(intTy64, nullptr, "alloca2");
-        errs() << "after alloca\n";
+        // errs() << "after alloca\n";
         StoreInst *ST = builder.CreateStore(builder.CreatePtrToInt(vaddr, intTy64, "vaddrtoi64"), AI, false);
-        errs() << "after store\n";
+        // errs() << "after store\n";
         LoadInst *LT = builder.CreateLoad(AI, "load3");
-        errs() << "after load\n";
+        // errs() << "after load\n";
         Value *LSHR = builder.CreateLShr(LT, 3, "lshr4", false);
-        errs() << "after lshr\n";
-        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0x0), "add5");
-        errs() << "after add\n";
+        // errs() << "after lshr\n";
+        Value *ADD = builder.CreateAdd(LSHR, ConstantInt::get(intTy64, 0xdfffc88000000000), "add5");
+        // errs() << "after add\n";
         return ADD;
     }
 
@@ -113,7 +141,7 @@ namespace {
         Value *rbp = builder.CreateCall(IA, {});
         return rbp;
     }
-
+    
     // vaddr = inst_cal_tag()!!!
     void Inst2ModulePass::inst_set_tag(Value* vaddr, IRBuilder<> &builder, Module &M){
         // define dso_local void @set_tag(i64 %vaddr, i8 signext %1) #0 {
@@ -139,13 +167,13 @@ namespace {
         Value *alloca4 = builder.CreateAlloca(intTy8, nullptr, "alloca4");
         Value *alloca5 = builder.CreateAlloca(i8ptr, nullptr, "alloca5");
 
-        errs() << "alloca\n";
+        // errs() << "alloca\n";
 
         Value *store1 = builder.CreateStore(vaddr, alloca3, false);
-        errs() << "store\n";
+        // errs() << "store\n";
         Value *eid = ConstantInt::get(intTy8, (0b10));
         Value *store2 = builder.CreateStore(eid, alloca4, false);
-        errs() << "store\n";
+        // errs() << "store\n";
 
         Value *load6 = builder.CreateLoad(alloca3, "load6");
         Value *inttoptr7 = builder.CreateIntToPtr(load6, i8ptr, "inttoptr7");
@@ -159,35 +187,87 @@ namespace {
     }
     
     
-    
-    
     bool Inst2ModulePass::runOnModule(Module &M)  {
         auto& CTX = M.getContext();
         generateStoreVec(M);
+        declareCheck(M);
         outs() << "instructions : " << M.getInstructionCount() << "\n";
         outs() << "store instructions: " << storeVec.size() << "\n";
-
         
-        Instruction* Ins = storeVec[0];
-        std::vector<Value*> param;
-        for (Use &U : Ins->operands()) {
-            param.push_back(U.get());
+        for (auto &F : M) {
+            if (F.isDeclaration()) {
+                continue;
+            }
+            Instruction *firstIns = &*F.getEntryBlock().getFirstInsertionPt();
+            IRBuilder<> builder0(firstIns);
+            // Function* printFunc = M.getFunction("ketag_print_func");
+            // builder0.CreateCall(printFunc, {builder0.CreateGlobalStringPtr(F.getName())} );
+            Value *RBP = inst_get_rbp(builder0, M);
+            // Value *TAG = inst_cal_tag(RBP, builder0, M);
+            // inst_set_tag(TAG, builder0, M);
+            Function *setFunc = M.getFunction("ketag_set_tag");
+            builder0.CreateCall(setFunc, 
+                { 
+                    RBP, 
+                    ConstantInt::get(Type::getInt8Ty(CTX), (char)(1 << extensionID))
+                }
+            );
+            for (auto &BB : F) {
+                
+
+                 for (auto& Ins : BB) {
+                    if (Ins.getOpcode() == Instruction::Ret) {
+                        IRBuilder<> builder1(&Ins);
+                        // inst_set_tag(TAG, builder1, M);
+                        builder1.CreateCall(setFunc, 
+                            { 
+                                RBP,
+                                ConstantInt::get(Type::getInt8Ty(CTX), 0b00000000)
+                            }
+                        );
+                        break;
+                    }
+                }
+            }
         }
-        IRBuilder<> builder(Ins);
-        Value *ADD = inst_cal_tag(param[1], builder, M);
-        // errs() << "get ADD " << *ADD << "\n";
-        Value *RBP = inst_get_rbp(builder, M);
-        // errs() << "get RBP " << *RBP << "\n";
+        int c = 0;
 
+        for (auto Ins : storeVec)
+        {
+            std::vector<Value*> param;
+            for (Use &U : Ins->operands()) {
+                param.push_back(U.get());
+            }
+            IRBuilder<> builder(Ins);
+            Function *checkFunc = M.getFunction("ketag_check");
+            // errs() << checkFunc->getName() <<  " " << checkFunc->getNumOperands() << "\n";
+            // errs() << c++ << " " << *Ins << " " << Ins->getFunction() << " " << *param[1] << "\n";
+            // if (c == 2) break;
+            builder.CreateCall(checkFunc, 
+                { 
+                    builder.CreatePtrToInt(param[1], Type::getInt64Ty(CTX)), 
+                    ConstantInt::get(Type::getInt8Ty(CTX), (1 << extensionID))
+                }
+            );
+        }
+        // Instruction *Ins = storeVec[0];
+        // Function *F = Ins->getFunction();
+        // Instruction *firstIns = &*F->getEntryBlock().getFirstInsertionPt();
+        // IRBuilder<> builder0(firstIns);
+        // Value *RBP = inst_get_rbp(builder0, M);
+        // Value *TAG = inst_cal_tag(RBP, builder0, M);
+        // inst_set_tag(TAG, builder0, M);
 
-        builder.CreateCall(M.getFunction("printx"), {ADD});
-        builder.CreateCall(M.getFunction("printx"), {RBP});
+        // for (auto& BB : *F) {
+        //     for (auto& Ins : BB) {
+        //         if (Ins.getOpcode() == Instruction::Ret) {
+        //             IRBuilder<> builder1(&Ins);
+        //             inst_set_tag(TAG, builder1, M);
+        //             break;
+        //         }
+        //     }
+        // }
 
-
-        // Value *A = Ins->getFunction()->getArg(0);
-
-        // Value *vaddr = builder.CreatePtrToInt(A, Type::getInt64Ty(CTX), "vaddr");
-        inst_set_tag(ADD, builder, M);
         return true;
     }
 
