@@ -17,6 +17,15 @@ inst1:
 inst2:
 	clang `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared ./inst2.cpp -o llvminst2.so `llvm-config --ldflags`
 
+inst3:
+	clang `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared ./inst3.cpp -o llvminst3.so `llvm-config --ldflags`
+	
+inst4:
+	clang `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared ./inst4.cpp -o llvminst4.so `llvm-config --ldflags`
+
+opt-inst3:
+	opt -load ./llvminst3.so -S -inst test/test.ll -o test-inst.ll
+
 opt-inst0:
 	opt -load ./LLVMinstkern.so -inst acl.ll -o acl-inst.bc
 	llvm-dis acl-inst.bc

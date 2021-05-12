@@ -8,7 +8,7 @@ target triple = "x86_64-pc-linux-gnu"
 @.str.2 = private unnamed_addr constant [5 x i8] c"+%d\0A\00", align 1
 @.str.3 = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
 @.str.4 = private unnamed_addr constant [12 x i8] c"ketag---%s\0A\00", align 1
-@.str.5 = private unnamed_addr constant [25 x i8] c"get x addr: %016lx - %d\0A\00", align 1
+@.str.5 = private unnamed_addr constant [22 x i8] c"test addr %016lx, %d\0A\00", align 1
 
 ; Function Attrs: noinline nounwind optnone sspstrong uwtable
 define dso_local void @printx(i64 %0) #0 {
@@ -125,19 +125,26 @@ define dso_local void @ketag_print_func(i8* %0) #0 {
 }
 
 ; Function Attrs: noinline nounwind optnone sspstrong uwtable
+define dso_local void @testaddr(i32* %0) #0 {
+  %2 = alloca i32*, align 8
+  store i32* %0, i32** %2, align 8
+  %3 = load i32*, i32** %2, align 8
+  %4 = load i32*, i32** %2, align 8
+  %5 = load i32, i32* %4, align 4
+  %6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.5, i64 0, i64 0), i32* %3, i32 %5)
+  ret void
+}
+
+; Function Attrs: noinline nounwind optnone sspstrong uwtable
 define dso_local i32 @main() #0 {
   %1 = alloca i32, align 4
   %2 = alloca i32, align 4
-  %3 = alloca i32, align 4
+  %3 = alloca i32*, align 8
   store i32 0, i32* %1, align 4
   store i32 10, i32* %2, align 4
-  store i32 -12, i32* %3, align 4
-  %4 = load i32, i32* %2, align 4
-  %5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.5, i64 0, i64 0), i32* %2, i32 %4)
-  %6 = load i32, i32* %2, align 4
-  %7 = call i32 @a(i32 %6)
-  %8 = load i32, i32* %3, align 4
-  %9 = call i32 @a(i32 %8)
+  call void @testaddr(i32* %2)
+  %4 = load i32*, i32** %3, align 8
+  call void @testaddr(i32* %4)
   ret i32 0
 }
 

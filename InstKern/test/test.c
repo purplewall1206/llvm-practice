@@ -53,11 +53,21 @@ void ketag_print_func(char* name) {
     printf("ketag---%s\n", name);
 }
 
+void testaddr(int* x) {
+    printf("test addr %016lx, %d\n", x, *x);
+}
+
+
 int main()
 {
     int x = 10;
-    int y = -12;
-    a(x);
-    a(y);
+    // int y = -12;
+    //  printf("get x addr: %016lx - %d\n", &x, x);
+    // a(x);
+    // a(y);
+    int *y;
+    // *y = 2;
+    testaddr(&x);
+    testaddr(y);
     return 0;
 }
