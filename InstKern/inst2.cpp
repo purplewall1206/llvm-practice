@@ -37,10 +37,11 @@ namespace {
         Inst2ModulePass() : ModulePass(ID) {}
         bool runOnModule(Module &M) override;
         std::vector<Instruction*> storeVec;
+        std::vector<Instruction*> icallVec;
         std::vector<StringRef> exceptVec = {"printx"};
         // std::vector<Instruction*> entryVec;
 
-        void generateStoreVec(Module &M);
+        void generateVec(Module &M);
         // bool declareFunction(Module &M, StringRef name);
         bool isException(StringRef name);
         Value* inst_cal_tag(Value* vaddr, IRBuilder<> &builder, Module &M);
@@ -86,7 +87,7 @@ namespace {
         return false;
     }
 
-    void Inst2ModulePass::generateStoreVec(Module &M) {
+    void Inst2ModulePass::generateVec(Module &M) {
         for (auto& F : M) {
             if (isException(F.getName())) {
                 continue;
@@ -98,6 +99,12 @@ namespace {
                 for (auto & Ins : BB) {
                     if (Ins.getOpcode() == Instruction::Store) {
                         storeVec.push_back(&Ins);
+                    }
+                    if (Ins.getOpcode() == Instruction::Call) {
+                        auto *CB = dyn_cast<CallBase>(&Ins);
+                        if (CB->isIndirectCall()) {
+                            icallVec.push_back(&Ins);
+                        }
                     }
                 }
             }
@@ -189,10 +196,11 @@ namespace {
     
     bool Inst2ModulePass::runOnModule(Module &M)  {
         auto& CTX = M.getContext();
-        generateStoreVec(M);
+        generateVec(M);
         declareCheck(M);
         outs() << "instructions : " << M.getInstructionCount() << "\n";
         outs() << "store instructions: " << storeVec.size() << "\n";
+        outs() << "icall instructions: " << icallVec.size() << "\n";
         
         for (auto &F : M) {
             if (F.isDeclaration()) {
@@ -249,6 +257,19 @@ namespace {
                     ConstantInt::get(Type::getInt8Ty(CTX), (1 << extensionID))
                 }
             );
+        }
+
+        for (auto Ins : icallVec) {
+            auto *CB = dyn_cast<CallBase>(Ins);
+            IRBuilder<> builder(Ins);
+            Function *checkFunc = M.getFunction("ketag_check");
+            builder.CreateCall(checkFunc, 
+                { 
+                    builder.CreatePtrToInt(CB->getCalledOperand(), Type::getInt64Ty(CTX)), 
+                    ConstantInt::get(Type::getInt8Ty(CTX), (1 << extensionID))
+                }
+            );
+            // outs() << "xxxxxxxx : " << *CB->getCalledOperand() << "\n";
         }
         // Instruction *Ins = storeVec[0];
         // Function *F = Ins->getFunction();
