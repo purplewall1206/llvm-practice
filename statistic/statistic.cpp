@@ -33,6 +33,7 @@ namespace {
         std::vector<Instruction*> callVec;
         std::vector<Instruction*> retVec;
         std::vector<Instruction*> loadVec;
+        std::vector<Instruction*> allocaVec;
         int storeWithoutDbgInfo = 0;
         // database
         sqlite3 *db;
@@ -69,6 +70,10 @@ namespace {
                         loadVec.push_back(&Ins);
                     }
 
+                    if (Ins.getOpcode() == Instruction::Alloca) {
+                        allocaVec.push_back(&Ins);
+                    }
+
                 }
             }
         }
@@ -78,19 +83,19 @@ namespace {
         outs() << "    ret   instructions: " << retVec.size() << "\n"; 
         outs() << "    load  instructions: " << loadVec.size() << "\n";
         outs() << "    call  instructions: " << callVec.size() << "\n";
-
-
+        outs() << "    alloc instructions: " << allocaVec.size() << "\n";
 
         int rc = sqlite3_open("ir-statistic.db", &db);
         if (rc) {
             errs() << "cannot open database " << sqlite3_errmsg(db) << "\n";
             return false;
         }
-        llvm::Twine sql = "INSERT INTO INSTRUCTIONS (FILENAME, STORE, ICALL, RET, TOTAL, CALL, LOAD) VALUES "\
+        llvm::Twine sql = "INSERT INTO INSTRUCTIONS (FILENAME, STORE, ICALL, RET, TOTAL, CALL, LOAD, ALLOCA) VALUES "\
                             "(\"" + M.getName() + "\", " + std::to_string(storeVec.size()) + ", "\
                             + std::to_string(icallVec.size()) + ", " + std::to_string(retVec.size()) + ", "\
                             + std::to_string(instructionsCount) + ", " \
-                            + std::to_string(callVec.size()) + ", " + std::to_string(loadVec.size()) + ")";
+                            + std::to_string(callVec.size()) + ", " + std::to_string(loadVec.size()) + ", "\
+                            + std::to_string(allocaVec.size()) +")";
             
         outs() << sql << "\n";
         char *errmsg;

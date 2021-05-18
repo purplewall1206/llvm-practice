@@ -1,6 +1,9 @@
 stat:
 	clang-11 `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared ./statistic.cpp -o LLVMstatistic.so `llvm-config --ldflags` -l sqlite3
 
+irstat:
+	clang `llvm-config --cxxflags` -Wl,-znodelete -fno-rtti -fPIC -shared ./storestat.cpp -o LLVMirstatistic.so `llvm-config --ldflags`
+
 opt:
 	opt -load ./LLVMstatistic.so -inst ~/Documents/linux-5.10.25/fs/ext4/dir.ll -disable-output
 
