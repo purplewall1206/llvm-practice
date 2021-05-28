@@ -219,4 +219,5 @@ static void loadPass(const PassManagerBuilder &Builder, llvm::legacy::PassManage
 }
 
 // 这里设置clang -Xclang -load -Xclang ./mypass.so .... 执行pass的位置
-static RegisterStandardPasses Y1(PassManagerBuilder::EP_OptimizerLast, loadPass);
+// static RegisterStandardPasses Y1(PassManagerBuilder::EP_OptimizerLast, loadPass);
+static RegisterStandardPasses Y3(PassManagerBuilder::EP_EarlyAsPossible , loadPass);
